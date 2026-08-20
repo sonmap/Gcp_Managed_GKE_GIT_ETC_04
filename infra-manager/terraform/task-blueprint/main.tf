@@ -1,11 +1,11 @@
 locals {
   raw_task_slug = trim(replace(lower(var.task_id), "/[^a-z0-9-]/", "-"), "-")
-  task_slug     = substr(local.raw_task_slug != "" ? local.raw_task_slug : "data-model-task", 0, 50)
+  task_slug     = trim(substr(local.raw_task_slug != "" ? local.raw_task_slug : "data-model-task", 0, 50), "-")
   group_label   = substr(replace(lower(var.group), "/[^a-z0-9_-]/", "_"), 0, 63)
 
   namespace_name = local.task_slug
-  ksa_name       = substr("ksa-${local.task_slug}", 0, 63)
-  gsa_account_id = substr("dm-task-${local.task_slug}", 0, 30)
+  ksa_name       = trim(substr("ksa-${local.task_slug}", 0, 63), "-")
+  gsa_account_id = trim(substr("dm-task-${local.task_slug}", 0, 30), "-")
   gke_project_id = var.gke_project_id != "" ? var.gke_project_id : var.target_project_id
 
   request_user_dataset_role = {
