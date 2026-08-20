@@ -1,0 +1,17 @@
+{
+  "taskId": "model-001",
+  "taskName": "fraud-detection-model",
+  "requestUser": "user01@example.com",
+  "group": "fraud",
+  "targetProjectId": "dev-com-334508",
+  "location": "asia-northeast3",
+  "cpuRequest": "2",
+  "cpuLimit": "4",
+  "memoryRequest": "8Gi",
+  "memoryLimit": "16Gi",
+  "storage": "50Gi",
+  "bigqueryRole": "editor",
+  "jupyterImage": "quay.io/jupyter/base-notebook:latest",
+  "jupyterServiceType": "ClusterIP",
+  "expireDate": "2026-12-31"
+}
