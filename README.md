@@ -50,6 +50,8 @@ infra-manager/terraform/bootstrap/       최초 1회 IAM/SA 준비(관리자 실
 infra-manager/terraform/foundation/      공통 GKE Autopilot Foundation
 infra-manager/terraform/task-blueprint/  과제별 Workspace 자원
 cloud-run-adapter/                       포털 JSON -> IM/Terraform 변수 변환
+portal-integration/                      기존 Java Web 연동 예제
+jupyter-image/                           공통 Jupyter 이미지/패키지/Cloud Build
 examples/                                요청 JSON 예제
 docs/                                    구조/운영 설명
 ```
@@ -59,6 +61,8 @@ docs/                                    구조/운영 설명
 사람 계정은 Cloud Identity/Google Workspace/사내 IdP에서 수명주기를 관리하는 것을 권장합니다. 이 Blueprint는 신규 사람 계정을 직접 생성하지 않고 `requestUser`로 전달된 기존 회사 계정에 과제 Dataset IAM을 부여합니다.
 
 Service Account는 과제마다 생성합니다. Jupyter Pod에는 JSON Key를 넣지 않고 KSA -> GSA Workload Identity를 사용합니다.
+
+실제 사람 계정까지 자동 생성해야 한다면 Google Workspace/Cloud Identity Admin API를 별도 Identity Provisioning 단계로 추가해야 합니다. 인프라 과제 Terraform과 사람 계정 수명주기를 한 State에 결합하는 것은 권장하지 않습니다.
 
 ## 요청 예시
 
@@ -77,6 +81,7 @@ Service Account는 과제마다 생성합니다. Jupyter Pod에는 JSON Key를 �
   "storage": "50Gi",
   "bigqueryRole": "editor",
   "jupyterImage": "quay.io/jupyter/base-notebook:latest",
+  "jupyterServiceType": "ClusterIP",
   "expireDate": "2026-12-31"
 }
 ```
@@ -85,6 +90,10 @@ Service Account는 과제마다 생성합니다. Jupyter Pod에는 JSON Key를 �
 
 - `foundation-analysis`: 공통 GKE Autopilot을 소유하는 Infrastructure Manager Deployment. 기본적으로 1개만 존재합니다.
 - `model-001`, `model-002`, ...: 과제별 Infrastructure Manager Deployment. 각 Deployment는 독립 Terraform State/Revision을 가집니다.
+
+## Jupyter 이미지
+
+`jupyter-image/`에는 공통 Notebook 이미지 소스와 패키지 목록, Cloud Build 설정이 있습니다. 운영에서는 Artifact Registry에 빌드한 고정 tag/digest 이미지를 `jupyterImage`로 전달하는 것을 권장합니다.
 
 ## Jupyter 접근
 
