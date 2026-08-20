@@ -1,0 +1,15 @@
+substitutions:
+  _REGION: asia-northeast3
+  _REPOSITORY: analysis-images
+  _IMAGE_NAME: data-model-jupyter
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE_NAME}:$SHORT_SHA
+      - jupyter-image
+
+images:
+  - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/${_IMAGE_NAME}:$SHORT_SHA
